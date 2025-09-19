@@ -47,4 +47,7 @@ sequenceDiagram
     browser->>server: GET /data.json
     activate server
     server-->>browser: JSON notes (with new note)
-    de
+    deactivate server
+
+    Note right of browser: Browser executes JS to render updated notes
+```
