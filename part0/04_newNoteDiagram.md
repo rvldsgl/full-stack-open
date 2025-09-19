@@ -1,52 +1,48 @@
-```mermaid
-  sequenceDiagram
+sequenceDiagram
     participant browser
     participant server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    browser->>server: GET /notes
     activate server
     server-->>browser: HTML document
     deactivate server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    browser->>server: GET /main.css
     activate server
-    server-->>browser: the css file
+    server-->>browser: CSS file
     deactivate server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    browser->>server: GET /main.js
     activate server
-    server-->>browser: the JavaScript file
+    server-->>browser: JavaScript file
     deactivate server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    browser->>server: GET /data.json
     activate server
-    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    server-->>browser: JSON notes
     deactivate server
 
-    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    browser->>server: POST /new_note
     activate server
-    server-->>browser:  HTTP status code 302
+    server-->>browser: HTTP 302 Redirect
     deactivate server
 
-    server-->>browser: GET https://studies.cs.helsinki.fi/exampleapp/notes
-    deactivate server
-    server-->>browser: the JavaScript file
-    deactivate server
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    browser->>server: GET /notes
     activate server
-    server-->>browser: the css file
+    server-->>browser: HTML document (reload)
     deactivate server
 
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    browser->>server: GET /main.css
     activate server
-    server-->>browser: the JavaScript file
+    server-->>browser: CSS file
     deactivate server
 
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    browser->>server: GET /main.js
     activate server
-    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    server-->>browser: JavaScript file
     deactivate server
 
-    Note right of browser: The browser executes the callback function that renders the notes
+    browser->>server: GET /data.json
+    activate server
+    server-->>browser: JSON notes (with new note)
+    de
