@@ -1,20 +1,11 @@
 import { useState } from 'react'
 
-const ListNumber = ({names}) =>{
-  return (<div>
-      <ul>
-        {names.map(name => <li>{name.name} {name.number}</li>)}
-      </ul>
-    </div>)
-}
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import RenderPerson from './components/RenderPerson'
 
-const Filter = (props) =>{
-  
-  return(  
-    <div>
-        filterShown: <input value={props.filteredName} onChange={props.onChange} />
-    </div>)
-}
+
+
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -26,8 +17,6 @@ const App = () => {
   const [filteredName, setFilteredName] = useState(persons)
 
 
-
-  
   const addNewName = (event)=>{
     const nameExists = persons.some(person => person.name.toLowerCase() === newName.toLowerCase())
     console.log(nameExists)
@@ -57,37 +46,20 @@ const App = () => {
 
   const handlefilter = (event)=>{
     setNewNameFiltered(event.target.value)
-    const filtered = persons.filter(person =>
-      person.name.toLowerCase().includes(search.toLowerCase())
-    )
-
-    if (filtered.length > 0 ){
-      setFilteredName(filtered)
-    }
-
-
   }
+
+  const personsToShow = persons.filter(person =>
+    person.name.toLowerCase().includes(newNameFiltered.toLowerCase())
+  )
 
   return (
     <div>
-      <div>debug Name: {newName}</div>
-      <div>debug filteredName: {newNameFiltered}</div>
-      <div>debug Number: {newNumber}</div>
       <Filter filteredName={newNameFiltered} onChange={handlefilter} />
       <h2>Phonebook</h2>
-      <form onSubmit={addNewName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          phoneNumber: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm addNewName = {addNewName} newName = {newName} handleNameChange = {handleNameChange} newNumber = {newNumber} handleNumberChange = {handleNumberChange} />
+
       <h2>Numbers</h2>
-      <ListNumber names={persons} />
+      <RenderPerson names={personsToShow} />
     </div>
   )
 }
