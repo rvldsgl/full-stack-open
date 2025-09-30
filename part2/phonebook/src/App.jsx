@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -16,6 +17,13 @@ const App = () => {
   const [newNameFiltered, setNewNameFiltered] = useState('')
   const [filteredName, setFilteredName] = useState(persons)
 
+  useEffect(() =>{
+    axios.get('http://localhost:3001/persons').then(
+      (response) =>{
+        setPersons(response.data)
+      }
+    )
+  },[])
 
   const addNewName = (event)=>{
     const nameExists = persons.some(person => person.name.toLowerCase() === newName.toLowerCase())
