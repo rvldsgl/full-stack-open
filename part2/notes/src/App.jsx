@@ -10,15 +10,12 @@ const App = (props) => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/notes')
-      .then(response => {
-        console.log('promise fulfilled')
-        setNotes(response.data)
+    noteService
+      .getAll()
+      .then(initialNotes => {
+        setNotes(initialNotes)
       })
   }, [])
-  console.log('render', notes.length, 'notes')  
 
   const notesToShow = showAll
   ? notes
@@ -29,9 +26,19 @@ const App = (props) => {
     const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
     console.log('this is changed note', changedNote)
-    axios.put(url, changedNote).then(response => {
-      setNotes(notes.map(note => note.id === id ? response.data : note))
+   
+    noteService
+      .update(id, changedNote)
+      .then(returnedNote => {
+        setNotes(notes.map(note => note.id === id ? returnedNote : note))
+      })
+      .catch(error => {
+      alert(
+        `the note '${note.content}' was already deleted from server`
+      )
+      setNotes(notes.filter(n => n.id !== id))
     })
+
   }
 
   const addNote = (event) => {
@@ -40,12 +47,14 @@ const App = (props) => {
       content: newNote,
       important: Math.random() < 0.5
     }
-    axios
-      .post('http://localhost:3001/notes', noteObject)
-      .then(response => {
-        setNotes(notes.concat(response.data))
+    
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
         setNewNote('')
       })
+
   }
 
   const handleNoteChange = (event) => {
