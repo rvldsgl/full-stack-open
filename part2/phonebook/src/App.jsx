@@ -34,7 +34,7 @@ const App = () => {
     const tempName = {
       name: newName,
       number: newNumber
-    }
+    } 
     
     const checkName = nameExists ? alert(`${newName} is already added to the phonebook`) : setPersons(persons.concat(tempName)) 
     

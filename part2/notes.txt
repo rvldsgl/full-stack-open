@@ -1,0 +1,2 @@
+- gimana web socket bekerja
+- apa itu http request
